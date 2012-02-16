@@ -283,7 +283,7 @@ module.exports = class Node extends PropertyContainer
         catch error
             throw adjustError error
 
-    index: (index, key, value, _) ->
+    index: (index, key, value, unique=true, _) ->
         try
             # TODO
             if not @exists
@@ -305,8 +305,11 @@ module.exports = class Node extends PropertyContainer
 
             # new API:
             else
+                url = "#{services.node_index}/#{index}"
+                if unique then url += "?unique"
+
                 response = request.post
-                    url: "#{services.node_index}/#{index}"
+                    url: url
                     json:
                         key: key
                         value: value
