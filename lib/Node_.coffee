@@ -283,7 +283,7 @@ module.exports = class Node extends PropertyContainer
         catch error
             throw adjustError error
 
-    index: (index, key, value, unique=false, _) ->
+    index: (index, key, value, _, unique=false) ->
         try
             # TODO
             if not @exists
