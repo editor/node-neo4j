@@ -306,7 +306,7 @@ module.exports = class Node extends PropertyContainer
             # new API:
             else
                 url = "#{services.node_index}/#{index}"
-                if unique then "#{url}?unique"
+                if unique then url += "/?unique"
 
                 response = request.post
                     url: url
