@@ -241,3 +241,32 @@ module.exports = class GraphDatabase
 
         catch error
             throw adjustError error
+
+    # executes multiple API calls through a single HTTP call.
+    # jobs param should be array of objects containing path, method
+    # and optionally body, id such as:
+    # { 'method' : 'POST', 'to' : '/node', 'body' : { 'age' : 1 }, 'id' : 0 }
+    # currently returns the raw json from response since jobs can
+    # return different objects (nodes, relationships, etc)
+    # more info at:
+    # http://docs.neo4j.org/chunked/stable/rest-api-batch-ops.html
+    batch: (jobs, _) ->
+        try
+            services = @getServices _
+            url = services.batch
+
+            response = request.post
+                uri: url
+                json: jobs
+            , _
+
+            if response.statusCode isnt status.OK
+                # Database error
+                throw response
+
+            # Success
+            res = response.body
+            return res
+
+        catch error
+            throw adjustError error
