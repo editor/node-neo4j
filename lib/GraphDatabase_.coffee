@@ -95,6 +95,20 @@ module.exports = class GraphDatabase
         catch error
             throw adjustError error
 
+    deleteNodeIndex: (index, node, _) ->
+      try
+        services = @getServices _
+
+        url = "#{services.node_index}/#{index}/#{node}"
+
+        response = @_request.del url, _
+
+        if response.statusCode isnt 204
+          throw response
+
+      catch error
+        throw adjustError error
+
     getIndexedNode: (index, property, value, _) ->
         try
             nodes = @getIndexedNodes index, property, value, _
