@@ -95,7 +95,7 @@ module.exports = class GraphDatabase
         catch error
             throw adjustError error
 
-    deleteNodeIndex: (index, node, _) ->
+    deleteNodeEntry: (index, node, _) ->
       try
         services = @getServices _
 
