@@ -50,3 +50,45 @@ module.exports = class Relationship extends PropertyContainer
     # Alias
     del: @::delete
 
+    index: (index, key, value, _, unique=false) ->
+        try
+            # TODO
+            if not @exists
+                throw new Error 'Relationship must exists before indexing properties'
+
+            services = @db.getServices _
+            version = @db.getVersion _
+
+            # old API:
+            if version <= 1.4
+                encodedKey = encodeURIComponent key
+                encodedValue = encodeURIComponent value
+                url = "#{services.relationship_index}/#{index}/#{encodedKey}/#{encodedValue}"
+
+                response = request.post
+                    url: url
+                    json: @self
+                , _
+
+            # new API:
+            else
+                url = "#{services.relationship_index}/#{index}"
+                if unique then url += "/?unique"
+
+                response = request.post
+                    url: url
+                    json:
+                        key: key
+                        value: value
+                        uri: @self
+                , _
+
+            if response.statusCode isnt status.CREATED
+                # database error
+                throw response
+
+            # success
+            return
+
+        catch error
+            throw adjustError error
