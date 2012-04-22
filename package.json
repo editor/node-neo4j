@@ -39,7 +39,7 @@
     "scripts": {
         "build": "_coffee -c lib",
         "clean": "rm lib/*.js",
-        "test": "node test"
+        "test": "_coffee test/index"
     },
     "engines": {
         "node": ">= 0.4.5"
