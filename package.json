@@ -39,6 +39,8 @@
     "scripts": {
         "build": "_coffee -c lib",
         "clean": "rm lib/*.js",
+        "prepublish": "npm run build",
+        "postpublish": "npm run clean",
         "test": "_coffee test/index"
     },
     "engines": {
