@@ -176,6 +176,21 @@ module.exports = class GraphDatabase
         catch error
             throw adjustError error
 
+    deleteRelationshipEntry: (index, relationship, _) ->
+      try
+        services = @getServices _
+
+        url = "#{services.relationship_index}/#{index}/#{relationship}"
+
+        response = @_request.del url, _
+
+        if response.statusCode isnt 204
+          throw response
+
+      catch error
+        throw adjustError error
+
+
     getIndexedRelationship: (index, property, value, _) ->
         try
             relationships = @getIndexedRelationships index, property, value, _
