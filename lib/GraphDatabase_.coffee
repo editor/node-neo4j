@@ -6,11 +6,11 @@
 
 status = require 'http-status'
 
-util = require './util'
+util = require './util_'
 adjustError = util.adjustError
 
-Relationship = require './Relationship'
-Node = require './Node'
+Relationship = require './Relationship_'
+Node = require './Node_'
 
 module.exports = class GraphDatabase
     constructor: (url) ->

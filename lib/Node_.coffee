@@ -1,11 +1,11 @@
 status = require 'http-status'
 
-util = require './util'
+util = require './util_'
 adjustError = util.adjustError
 
-PropertyContainer = require './PropertyContainer'
-Relationship = require './Relationship'
-Path = require './Path'
+PropertyContainer = require './PropertyContainer_'
+Relationship = require './Relationship_'
+Path = require './Path_'
 
 module.exports = class Node extends PropertyContainer
     constructor: (db, data) ->
@@ -78,7 +78,9 @@ module.exports = class Node extends PropertyContainer
             throw adjustError error
 
         # *Then* delete the node
-        super
+        # XXX need to explicitly relay arguments to super since streamline
+        # needs to see the underscore parameter currently.
+        super _
 
     # Alias
     del: @::delete

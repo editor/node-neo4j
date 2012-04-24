@@ -1,16 +1,16 @@
 status = require 'http-status'
 
-util = require './util'
+util = require './util_'
 adjustError = util.adjustError
 
-PropertyContainer = require './PropertyContainer'
+PropertyContainer = require './PropertyContainer_'
 
 module.exports = class Relationship extends PropertyContainer
     constructor: (db, data, start, end) ->
         super db, data
 
         # require Node inline to prevent circular require dependency:
-        Node = require './Node'
+        Node = require './Node_'
 
         # TODO relationship "start" and "end" are inconsistent with
         # creating relationships "to" and "from". consider renaming.
