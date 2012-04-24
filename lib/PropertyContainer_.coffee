@@ -1,4 +1,5 @@
 status = require 'http-status'
+request = require 'request'
 
 util = require './util_'
 adjustError = util.adjustError
@@ -6,7 +7,6 @@ adjustError = util.adjustError
 module.exports = class PropertyContainer
     constructor: (db, data) ->
         @db = db
-        @_request = db._request     # convenience alias
 
         @_data = data or {}
         @_data.self = data?.self or null
@@ -35,7 +35,7 @@ module.exports = class PropertyContainer
             return
 
         try
-            response = @_request.del @self, _
+            response = request.del @self, _
 
             if response.statusCode isnt status.NO_CONTENT
                 # database error

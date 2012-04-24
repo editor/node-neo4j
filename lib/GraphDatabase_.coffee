@@ -5,6 +5,7 @@
 # we're returning immediately: process.nextTick _
 
 status = require 'http-status'
+request = require 'request'
 
 util = require './util_'
 adjustError = util.adjustError
@@ -15,7 +16,6 @@ Node = require './Node_'
 module.exports = class GraphDatabase
     constructor: (url) ->
         @url = url
-        @_request = util.wrapRequestForAuth url
 
         # Cache
         @_root = null
@@ -31,7 +31,7 @@ module.exports = class GraphDatabase
             return @_root
 
         try
-            response = @_request.get @url, _
+            response = request.get @url, _
 
             if response.statusCode isnt status.OK
                 throw response
@@ -48,7 +48,7 @@ module.exports = class GraphDatabase
 
         try
             root = @_getRoot _
-            response = @_request.get root.data, _
+            response = request.get root.data, _
 
             if response.statusCode isnt status.OK
                 throw response
@@ -79,7 +79,7 @@ module.exports = class GraphDatabase
 
     getNode: (url, _) ->
         try
-            response = @_request.get url, _
+            response = request.get url, _
 
             if response.statusCode isnt status.OK
 
@@ -129,7 +129,7 @@ module.exports = class GraphDatabase
             val = encodeURIComponent value
             url = "#{services.node_index}/#{index}/#{key}/#{val}"
 
-            response = @_request.get url, _
+            response = request.get url, _
 
             if response.statusCode isnt status.OK
                 # Database error
@@ -160,7 +160,7 @@ module.exports = class GraphDatabase
 
     getRelationship: (url, _) ->
         try
-            response = @_request.get url, _
+            response = request.get url, _
 
             if response.statusCode isnt status.OK
                 # TODO: Handle 404
@@ -250,7 +250,7 @@ module.exports = class GraphDatabase
             if not endpoint
                 throw new Error 'Cypher plugin not installed'
 
-            response = @_request.post
+            response = request.post
                 uri: endpoint
                 json: {query}
             , _
@@ -293,7 +293,7 @@ module.exports = class GraphDatabase
             services = @getServices _
             url = "#{services.node_index}/#{index}?query=#{encodeURIComponent query}"
 
-            response = @_request.get url, _
+            response = request.get url, _
 
             if response.statusCode isnt status.OK
                 # Database error

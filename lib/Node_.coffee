@@ -1,4 +1,5 @@
 status = require 'http-status'
+request = require 'request'
 
 util = require './util_'
 adjustError = util.adjustError
@@ -18,7 +19,7 @@ module.exports = class Node extends PropertyContainer
         try
             # TODO: check for actual modification
             if @exists
-                response = @_request.put
+                response = request.put
                     uri: "#{@self}/properties"
                     json: @data
                 , _
@@ -34,7 +35,7 @@ module.exports = class Node extends PropertyContainer
             else
                 services = @db.getServices _
 
-                response = @_request.post
+                response = request.post
                     uri: services.node
                     json: @data
                 , _
@@ -102,7 +103,7 @@ module.exports = class Node extends PropertyContainer
             otherNodeURL = to.self
 
             if createRelationshipURL? and otherNodeURL
-                response = @_request.post
+                response = request.post
                     url: createRelationshipURL
                     json:
                         to: otherNodeURL
@@ -165,7 +166,7 @@ module.exports = class Node extends PropertyContainer
             if not relationshipsURL
                 throw new Error 'Couldn\'t find URL of relationships endpoint.'
 
-            resp = @_request.get relationshipsURL, _
+            resp = request.get relationshipsURL, _
 
             if resp.statusCode is status.NOT_FOUND
                 throw new Error 'Node not found.'
@@ -212,7 +213,7 @@ module.exports = class Node extends PropertyContainer
                 max_depth: maxDepth
                 algorithm: algorithm
 
-            res = @_request.post
+            res = request.post
                 url: pathURL
                 json: data
             , _
@@ -261,7 +262,7 @@ module.exports = class Node extends PropertyContainer
             if not traverseURL
                 throw new Error 'Traverse not available.'
 
-            resp = @_request.post
+            resp = request.post
                 url: traverseURL
                 json:
                     'max_depth': 1
@@ -297,7 +298,7 @@ module.exports = class Node extends PropertyContainer
                 encodedValue = encodeURIComponent value
                 url = "#{services.node_index}/#{index}/#{encodedKey}/#{encodedValue}"
 
-                response = @_request.post
+                response = request.post
                     url: url
                     json: @self
                 , _
