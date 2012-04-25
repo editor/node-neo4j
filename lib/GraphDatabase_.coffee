@@ -180,8 +180,8 @@ module.exports = class GraphDatabase
       try
         services = @getServices _
 
-		key = encodeURIComponent property
-		val = encodeURIComponent value
+        key = encodeURIComponent property
+        val = encodeURIComponent value
         url = "#{services.relationship_index}/#{index}/#{key}/#{val}"
 
         response = @_request.del url, _
