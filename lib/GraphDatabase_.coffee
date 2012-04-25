@@ -176,13 +176,14 @@ module.exports = class GraphDatabase
         catch error
             throw adjustError error
 
-    deleteRelationshipEntry: (index, property, value, _) ->
+    deleteRelationshipEntry: (index, property, value, id, _) ->
       try
         services = @getServices _
 
         key = encodeURIComponent property
         val = encodeURIComponent value
-        url = "#{services.relationship_index}/#{index}/#{key}/#{val}"
+        id = encodeURIComponent id
+        url = "#{services.relationship_index}/#{index}/#{key}/#{val}/#{id}"
 
         response = request.del url, _
 
