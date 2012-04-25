@@ -176,11 +176,16 @@ module.exports = class GraphDatabase
         catch error
             throw adjustError error
 
-    deleteRelationshipEntry: (index, relationship, _) ->
+    deleteRelationshipEntry: (index, property, value, _) ->
       try
         services = @getServices _
 
-        url = "#{services.relationship_index}/#{index}/#{relationship}"
+
+		key = encodeURIComponent property
+		val = encodeURIComponent value
+
+        url = "#{services.relationship_index}/#{index}/#{key}/#{val}"
+		console.log " THE BLOODY URL: " + url
 
         response = @_request.del url, _
 
