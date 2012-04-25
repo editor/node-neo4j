@@ -184,7 +184,7 @@ module.exports = class GraphDatabase
         val = encodeURIComponent value
         url = "#{services.relationship_index}/#{index}/#{key}/#{val}"
 
-        response = @_request.del url, _
+        response = request.del url, _
 
         if response.statusCode isnt 204
           throw response
