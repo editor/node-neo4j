@@ -95,11 +95,15 @@ module.exports = class GraphDatabase
         catch error
             throw adjustError error
 
-    deleteNodeEntry: (index, node, _) ->
+    deleteNodeEntry: (index, key, value, id, _) ->
       try
         services = @getServices _
 
-        url = "#{services.node_index}/#{index}/#{node}"
+        key = encodeURIComponent property
+        val = encodeURIComponent value
+        id = encodeURIComponent id
+        url = "#{services.node_index}/#{index}/#{key}/#{val}/#{id}"
+        console.log "THISISTHEURL: " + url
 
         response = @_request.del url, _
 
