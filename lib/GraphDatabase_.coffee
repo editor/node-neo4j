@@ -182,8 +182,7 @@ module.exports = class GraphDatabase
 
 		key = encodeURIComponent property
 		val = encodeURIComponent value
-
-        url = "#{services.relationship_index}/#{index}/#{key}/#{val}"
+		url = "#{services.relationship_index}/#{index}/#{key}/#{val}"
 
         response = @_request.del url, _
 
