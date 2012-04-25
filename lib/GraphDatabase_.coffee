@@ -180,12 +180,10 @@ module.exports = class GraphDatabase
       try
         services = @getServices _
 
-
 		key = encodeURIComponent property
 		val = encodeURIComponent value
 
         url = "#{services.relationship_index}/#{index}/#{key}/#{val}"
-		console.log " THE BLOODY URL: " + url
 
         response = @_request.del url, _
 
