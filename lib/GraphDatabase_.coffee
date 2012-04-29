@@ -95,7 +95,7 @@ module.exports = class GraphDatabase
         catch error
             throw adjustError error
 
-    deleteNodeEntry: (index, key, value, id, _) ->
+    deleteNodeEntry: (index, property, value, id, _) ->
       try
         services = @getServices _
 
@@ -103,9 +103,9 @@ module.exports = class GraphDatabase
         val = encodeURIComponent value
         id = encodeURIComponent id
         url = "#{services.node_index}/#{index}/#{key}/#{val}/#{id}"
-        console.log "THISISTHEURL: " + url
+        console.log ( "node-neo4j > DELETE: " + url )
 
-        response = @_request.del url, _
+        response = request.del url, _
 
         if response.statusCode isnt 204
           throw response
@@ -188,9 +188,10 @@ module.exports = class GraphDatabase
         val = encodeURIComponent value
         id = encodeURIComponent id
         url = "#{services.relationship_index}/#{index}/#{key}/#{val}/#{id}"
-        console.log "THISISTHEURL: " + url
+        console.log ( "node-neo4j > DELETE: " + url )
         response = request.del url, _
-
+        console.log ( "COFFEE CODE WAS " + ( response.statusCode ) )
+        console.log ( "COFFEE RESPONSE WAS " + ( response.body ) )
         if response.statusCode isnt 204
           throw response
 
@@ -314,6 +315,28 @@ module.exports = class GraphDatabase
 
         catch error
             throw adjustError error
+
+    queryRelationshipIndex: (index, query, _) ->
+        try
+            services = @getServices _
+            url = "#{services.relationship_index}/#{index}?query=#{encodeURIComponent query}"
+
+            response = request.get url, _
+
+            if response.statusCode isnt status.OK
+                # Database error
+                throw response
+
+            # Success
+            relationshipArray = JSON.parse response.body
+            relationships = relationshipArray.map (relationship) =>
+                new Relationship this, relationship
+            return relationships
+
+        catch error
+            throw adjustError error
+
+
 
     # executes multiple API calls through a single HTTP call.
     # jobs param should be array of objects containing path, method

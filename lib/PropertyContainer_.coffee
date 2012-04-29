@@ -31,11 +31,15 @@ module.exports = class PropertyContainer
         @self is other?.self
 
     delete: (_) ->
+        console.log "DOING A DELETE!"
         if not @exists
             return
 
         try
             response = request.del @self, _
+            str = JSON.stringify response
+            console.log str
+
 
             if response.statusCode isnt status.NO_CONTENT
                 # database error
