@@ -300,6 +300,7 @@ module.exports = class GraphDatabase
         try
             services = @getServices _
             url = "#{services.node_index}/#{index}?query=#{encodeURIComponent query}"
+            console.log url
 
             response = request.get url, _
 
@@ -308,6 +309,8 @@ module.exports = class GraphDatabase
                 throw response
 
             # Success
+            console.log( "THE CODE: " + response.statusCode )
+            console.log response.body
             nodeArray = JSON.parse response.body
             nodes = nodeArray.map (node) =>
                 new Node this, node
@@ -321,6 +324,7 @@ module.exports = class GraphDatabase
             services = @getServices _
             url = "#{services.relationship_index}/#{index}?query=#{encodeURIComponent query}"
 
+            console.log url
             response = request.get url, _
 
             if response.statusCode isnt status.OK
@@ -328,6 +332,8 @@ module.exports = class GraphDatabase
                 throw response
 
             # Success
+            console.log( "THE CODE: " + response.statusCode )
+            console.log response.body
             relationshipArray = JSON.parse response.body
             relationships = relationshipArray.map (relationship) =>
                 new Relationship this, relationship
