@@ -70,6 +70,20 @@ module.exports = class GraphDatabase
         catch error
             throw adjustError
 
+    listRelationshipTypes: (_) ->
+        try
+            services = @getServices _
+            response = request.get services.relationship_types, _
+            if response.statusCode isnt status.OK
+                throw response			
+
+            response = JSON.parse response.body
+            return response
+
+        catch error
+            throw adjustError
+
+
     # Nodes
     createNode: (data) ->
         data = data || {}
@@ -158,8 +172,26 @@ module.exports = class GraphDatabase
         catch error
             throw adjustError error
 
-    # Relationships
-    createRelationship: (startNode, endNode, type, _) ->
+    listNodeRelationships: (_, id, direction, types) ->
+        try
+            services = @getServices _
+            console.log services
+            direction = 'all' if ( direction isnt 'outgoing' or 'out' or  'incoming' or 'in' )
+            types = [ types ] if ( 'string' is typeof types )
+            types = if ( 'undefined' is typeof types or types.length < 1 ) then types = '' else types = types.join( '&' )
+            url = "#{services.node}/#{id}/relationships/#{direction}/#{types}"
+            console.log ( "listNodeRelationships() GET: " + url )
+
+            response = request.get url, _
+            if response.statusCode isnt status.OK
+                throw response					
+
+            console.log response.body
+            return JSON.parse response.body
+
+        catch error
+            throw adjustError error
+
         # TODO: Implement
 
     getRelationship: (url, _) ->
